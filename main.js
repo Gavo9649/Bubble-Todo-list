@@ -12,22 +12,17 @@ let isDragging = false; // Flag to track if the circle is being dragged
 const circleColorIndexes = {};
 
 // Function to create a new task circle
-function createTask(text, savedData) {
+function createTask(text) {
     // Create a new task circle element
     const taskCircle = document.createElement('div');
     taskCircle.classList.add('task-circle');
 
-    // Create a new task text element for the user-input text
+    // Create a new task text element for the circle
     const taskTextElement = document.createElement('div');
     taskTextElement.classList.add('task-text');
     taskTextElement.textContent = text;
 
-    // Create a new task title element for the custom title
-    const taskTitleElement = document.createElement('div');
-    taskTitleElement.classList.add('task-title');
-
-    // Append the task title and task text to the task circle
-    taskCircle.appendChild(taskTitleElement);
+    // Append the task text to the task circle
     taskCircle.appendChild(taskTextElement);
 
     // Append the task circle to the task container
@@ -51,20 +46,6 @@ function createTask(text, savedData) {
         // Update the text size with minimum and maximum limits
         const textSize = Math.min(maxTextSize, Math.max(minTextSize, maxTextSize));
         taskTextElement.style.fontSize = textSize + 'px';
-        taskTitleElement.style.fontSize = textSize + 'px';
-
-        // Save the updated position and size to localStorage
-        const taskData = {
-            position: {
-                left: taskCircle.style.left,
-                top: taskCircle.style.top,
-            },
-            size: {
-                width: taskCircle.style.width,
-                height: taskCircle.style.height,
-            },
-        };
-        localStorage.setItem('task_' + taskCircle.id, JSON.stringify(taskData));
     }
 
     // Add a wheel event listener to change the size on scroll
@@ -94,9 +75,6 @@ function createTask(text, savedData) {
     // Add a double click event listener to remove the task
     taskCircle.addEventListener('dblclick', () => {
         taskCircle.remove();
-        // Remove saved data from localStorage
-        localStorage.removeItem('task_' + taskCircle.id);
-        localStorage.removeItem('taskColor_' + taskCircle.id);
     });
 
     // Add a mousedown event listener to set the dragging flag
@@ -109,11 +87,11 @@ function createTask(text, savedData) {
         isDragging = true;
     });
 
-    // Add a click event listener to handle click and change color and text
+    // Add a click event listener to handle click and change color
     taskCircle.addEventListener('click', (e) => {
         e.stopPropagation(); // Prevent the click from propagating to the container
 
-        // Only change the color and text if the circle is not being dragged
+        // Only change the color if the circle is not being dragged
         if (!isDragging) {
             // Check if this circle already has a color index
             if (circleColorIndexes[taskCircle] === undefined) {
@@ -132,26 +110,6 @@ function createTask(text, savedData) {
 
             // Set this circle as the selectedCircle
             selectedCircle = taskCircle;
-
-            // Set the custom title based on the color
-            switch (colorPresets[currentIndex]) {
-                case '#b92828a6':
-                    taskTitleElement.textContent = 'ENGR1550';
-                    break;
-                case '#2830c1a6':
-                    taskTitleElement.textContent = 'MATH1513';
-                    break;
-                case '#1c9d29a6':
-                    taskTitleElement.textContent = 'CHEM1515';
-                    break;
-                default:
-                    // Default text if color doesn't match any preset
-                    taskTitleElement.textContent = 'Other';
-                    break;
-            }
-
-            // Save the updated color to localStorage
-            localStorage.setItem('taskColor_' + taskCircle.id, taskCircle.style.backgroundColor);
         }
     });
 
@@ -160,21 +118,6 @@ function createTask(text, savedData) {
 
     // Initialize the size
     updateSize();
-
-    // Load saved data if available
-    if (savedData) {
-        taskCircle.style.left = savedData.position.left;
-        taskCircle.style.top = savedData.position.top;
-        taskCircle.style.width = savedData.size.width;
-        taskCircle.style.height = savedData.size.height;
-        // Load color
-        const savedColor = localStorage.getItem('taskColor_' + taskCircle.id);
-        if (savedColor) {
-            taskCircle.style.backgroundColor = savedColor;
-        }
-    }
-
-    return taskCircle;
 }
 
 // Function to make an element draggable
@@ -215,39 +158,11 @@ function dragElement(elmnt) {
     }
 }
 
-// Function to load saved data when the page loads
-function loadSavedData() {
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key.startsWith('task_')) {
-            const taskId = key.replace('task_', '');
-            const taskData = JSON.parse(localStorage.getItem(key));
-            createTask('Task Name', taskData);
-        }
-    }
-}
-
 // Event listener for adding a new task
 addTaskButton.addEventListener('click', () => {
     const taskName = taskText.value.trim();
     if (taskName !== '') {
-        const taskCircle = createTask(taskName);
+        createTask(taskName);
         taskText.value = '';
-
-        // Save the new task's data to localStorage
-        const taskData = {
-            position: {
-                left: taskCircle.style.left,
-                top: taskCircle.style.top,
-            },
-            size: {
-                width: taskCircle.style.width,
-                height: taskCircle.style.height,
-            },
-        };
-        localStorage.setItem('task_' + taskCircle.id, JSON.stringify(taskData));
     }
 });
-
-// Load saved data when the page loads
-loadSavedData();
