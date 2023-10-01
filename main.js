@@ -3,8 +3,9 @@ const taskContainer = document.getElementById('taskContainer');
 const taskText = document.getElementById('taskText');
 const addTaskButton = document.getElementById('addTaskButton');
 
+
 // Define a list of color presets
-const colorPresets = ['#b92828a6', '#2830c1a6', '#1c9d29a6'];
+const colorPresets = ['#b92828a6', '#2830c1a6', '#1c9d29a6', '#10d3d398'];
 let selectedCircle = null;
 let isDragging = false; // Flag to track if the circle is being dragged
 
@@ -110,6 +111,39 @@ function createTask(text) {
 
             // Set this circle as the selectedCircle
             selectedCircle = taskCircle;
+            //-------------------------------------------------------------
+            //-------------------------------------------------------------
+            //-------------------------------------------------------------
+            //-------------------------------------------------------------
+            //-------------------------------------------------------------
+            switch (colorPresets[currentIndex]) {
+                case '#b92828a6': //red
+                    taskTextElement.textContent = 'ENGR 1550\n' + text;
+                    break;
+                case '#2830c1a6': //blue
+                    taskTextElement.textContent = 'Math 1513\n' + text;
+                    break;
+                case '#1c9d29a6': //green
+                    taskTextElement.textContent = 'Chem 1515\n' + text;
+                    break;
+                case '#10d3d398': //light blue
+                    taskTextElement.textContent = 'YSU 1500\n' + text;
+                    break;
+                // case 'color':
+                //     taskTextElement.textContent = 'Other\n' + text;
+                //     break;
+                // case 'color':
+                //     taskTextElement.textContent = 'Other\n' + text;
+                //     break;
+                // case 'color':
+                //     taskTextElement.textContent = 'Other\n' + text;
+                //     break;
+                // case 'color':
+                //     taskTextElement.textContent = 'Other\n' + text;
+                //     break;
+                default:
+                    taskTextElement.textContent = 'Other\n' + text;
+            }
         }
     });
 
@@ -158,7 +192,18 @@ function dragElement(elmnt) {
     }
 }
 
-// Event listener for adding a new task
+// Event listener for adding a new task (with Enter key)
+taskText.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        const taskName = taskText.value.trim();
+        if (taskName !== '') {
+            createTask(taskName);
+            taskText.value = '';
+        }
+    }
+});
+
+// Event listener for adding a new task (with the button)
 addTaskButton.addEventListener('click', () => {
     const taskName = taskText.value.trim();
     if (taskName !== '') {

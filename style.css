@@ -46,7 +46,7 @@ button {
 }
 
 button:hover {
-    background-color: #219a52;
+    background-color: #17723b;
 }
 
 .task-container {
@@ -62,7 +62,7 @@ button:hover {
 
 /* Style the task box and make it draggable */
 .task-circle {
-    background-color: #949494a6;
+    background-color: #9494947c; /* 9494947c */
     border-radius: 50%; /* Make it a circle */
     cursor: grab;
     position: absolute;
