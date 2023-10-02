@@ -3,7 +3,6 @@ const taskContainer = document.getElementById('taskContainer');
 const taskText = document.getElementById('taskText');
 const addTaskButton = document.getElementById('addTaskButton');
 
-
 // Define a list of color presets
 const colorPresets = ['#b92828a6', '#2830c1a6', '#1c9d29a6', '#10d3d398'];
 let selectedCircle = null;
