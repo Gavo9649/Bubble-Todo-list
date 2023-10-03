@@ -2,7 +2,6 @@
 const taskContainer = document.getElementById('taskContainer');
 const taskText = document.getElementById('taskText');
 const addTaskButton = document.getElementById('addTaskButton');
-const signInButton = document.getElementById('signInButton');
 
 
 // Define a list of color presets
