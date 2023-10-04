@@ -4,7 +4,7 @@ const taskText = document.getElementById('taskText');
 const addTaskButton = document.getElementById('addTaskButton');
 
 // Define a list of color presets
-const colorPresets = ['#b92828a6', '#2830c1a6', '#1c9d29a6', '#10d3d398'];
+const colorPresets = ['#b92828a6', '#2830c1a6', '#1c9d29a6', '#10d3d398', '#ee1b88a3', '#aa3ee99f'];
 let selectedCircle = null;
 let isDragging = false; // Flag to track if the circle is being dragged
 
@@ -131,6 +131,26 @@ function createTask(text, savedAttributes = null) {
                     title = "YSU 1500:\n";
                     taskTextElement.textContent = title + text;
                     break;
+                case '#ee1b88a3': //
+                    title = "ENGR 1500:\n";
+                    taskTextElement.textContent = title + text;
+                    break;
+                case '#aa3ee99f': //
+                    title = "HST 1500:\n";
+                    taskTextElement.textContent = title + text;
+                    break;
+                // case '#': //
+                //     title = "New:\n";
+                //     taskTextElement.textContent = title + text;
+                //     break;
+                // case '#': //
+                //     title = "New:\n";
+                //     taskTextElement.textContent = title + text;
+                //     break;
+                // case '#': //
+                //     title = "New:\n";
+                //     taskTextElement.textContent = title + text;
+                //     break;
                 default:
                     title = "Other:\n";
                     taskTextElement.textContent = title + text;
