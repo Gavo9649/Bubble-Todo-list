@@ -219,6 +219,7 @@ function saveTasksToLocalStorage() {
 // Function to load tasks from local storage and recreate them
 function loadTasksFromLocalStorage() {
     const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    console.log(savedTasks)
     savedTasks.forEach((savedTask) => {
         createTask(savedTask.text, savedTask);
     });
