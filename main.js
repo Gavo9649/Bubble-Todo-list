@@ -1,6 +1,7 @@
 // Select important DOM elements
 const taskContainer = document.getElementById('taskContainer');
 const taskText = document.getElementById('taskText');
+const dateText = document.getElementById('dateText');
 const addTaskButton = document.getElementById('addTaskButton');
 
 // Define a list of color presets
@@ -131,11 +132,11 @@ function createTask(text, savedAttributes = null) {
                     title = "YSU 1500:\n";
                     taskTextElement.textContent = title + text;
                     break;
-                case '#ee1b88a3': //
+                case '#ee1b88a3': //pink-ish
                     title = "ENGR 1500:\n";
                     taskTextElement.textContent = title + text;
                     break;
-                case '#aa3ee99f': //
+                case '#aa3ee99f': //purple
                     title = "HST 1500:\n";
                     taskTextElement.textContent = title + text;
                     break;
@@ -253,9 +254,23 @@ loadTasksFromLocalStorage();
 taskText.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         const taskName = taskText.value.trim();
+        const dateName = '\n' + dateText.value.trim();
         if (taskName !== '') {
-            createTask(taskName);
+            createTask(taskName + dateName);
             taskText.value = '';
+            dateText.value = '';
+            saveTasksToLocalStorage(); // Save the new task to local storage
+        }
+    }
+});
+dateText.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        const taskName = taskText.value.trim();
+        const dateName = '\n' + dateText.value.trim();
+        if (taskName !== '') {
+            createTask(taskName + dateName);
+            taskText.value = '';
+            dateText.value = '';
             saveTasksToLocalStorage(); // Save the new task to local storage
         }
     }
@@ -264,9 +279,11 @@ taskText.addEventListener('keypress', (e) => {
 // Event listener for adding a new task (with the button)
 addTaskButton.addEventListener('click', () => {
     const taskName = taskText.value.trim();
+    const dateName = '\n' + dateText.value.trim();
     if (taskName !== '') {
-        createTask(taskName);
+        createTask(taskName + dateName);
         taskText.value = '';
+        dateText.value = '';
         saveTasksToLocalStorage(); // Save the new task to local storage
     }
 });
