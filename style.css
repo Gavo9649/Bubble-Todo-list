@@ -26,6 +26,13 @@ html {
     margin-top: 20px;
 }
 
+.edit-task-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
 input[type="text"] {
     padding: 10px;
     border: 1px solid #ccc;
@@ -41,7 +48,14 @@ input[class="date-input"] {
     font-size: 16px;
     width: 100px;
     margin-right: 10px;
-    
+}
+
+input[class="edit-task-input"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-right: 10px;
 }
 
 button {

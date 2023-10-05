@@ -31,9 +31,9 @@ function createTask(text, savedAttributes = null) {
     taskContainer.appendChild(taskCircle);
 
     // Set initial circle size and text size
-    let circleSize = 100; // Initial circle size
-    const minCircleSize = 50; // Minimum circle size
-    const maxCircleSize = 500; // Maximum circle size
+    let circleSize = 150; // Initial circle size
+    const minCircleSize = 100; // Minimum circle size
+    const maxCircleSize = 400; // Maximum circle size
 
     // Function to update the circle and text size
     function updateSize() {
@@ -76,11 +76,11 @@ function createTask(text, savedAttributes = null) {
         saveTasksToLocalStorage();
     });
 
-    // Add a double click event listener to remove the task
-    taskCircle.addEventListener('dblclick', () => {
-        taskCircle.remove();
-        saveTasksToLocalStorage(); // Save the updated tasks after removal
-    });
+    // // Add a double click event listener to remove the task
+    // taskCircle.addEventListener('dblclick', () => {
+    //     taskCircle.remove();
+    //     saveTasksToLocalStorage(); // Save the updated tasks after removal
+    // });
 
     // Add a mousedown event listener to set the dragging flag
     taskCircle.addEventListener('mousedown', () => {
@@ -136,7 +136,7 @@ function createTask(text, savedAttributes = null) {
                     title = "ENGR 1500:\n";
                     taskTextElement.textContent = title + text;
                     break;
-                case '#aa3ee99f': //purple
+                case '#aa3ee99f': //purple2
                     title = "HST 1500:\n";
                     taskTextElement.textContent = title + text;
                     break;
@@ -264,7 +264,7 @@ taskText.addEventListener('keypress', (e) => {
     }
 });
 dateText.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
         const taskName = taskText.value.trim();
         const dateName = '\n' + dateText.value.trim();
         if (taskName !== '') {
@@ -285,5 +285,13 @@ addTaskButton.addEventListener('click', () => {
         taskText.value = '';
         dateText.value = '';
         saveTasksToLocalStorage(); // Save the new task to local storage
+    }
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Delete' && selectedCircle) {
+        selectedCircle.remove();
+        selectedCircle = null;
+        saveTasksToLocalStorage(); // Save the updated tasks after removal
     }
 });
