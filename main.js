@@ -3,6 +3,8 @@ const taskContainer = document.getElementById('taskContainer');
 const taskText = document.getElementById('taskText');
 const dateText = document.getElementById('dateText');
 const addTaskButton = document.getElementById('addTaskButton');
+const editTaskButton = document.getElementById('editTaskButton');
+editTaskButton.style.display = "none";
 
 // Define a list of color presets
 const colorPresets = ['#b92828a6', '#2830c1a6', '#1c9d29a6', '#10d3d398', '#ee1b88a3', '#aa3ee99f'];
@@ -23,6 +25,9 @@ function createTask(text, savedAttributes = null) {
     taskTextElement.classList.add('task-text');
     let title = "Other:\n";
     taskTextElement.textContent = text;
+    function updateText(newText){
+        text = newText;
+    }
 
     // Append the task text to the task circle
     taskCircle.appendChild(taskTextElement);
@@ -76,11 +81,11 @@ function createTask(text, savedAttributes = null) {
         saveTasksToLocalStorage();
     });
 
-    // // Add a double click event listener to remove the task
-    // taskCircle.addEventListener('dblclick', () => {
-    //     taskCircle.remove();
-    //     saveTasksToLocalStorage(); // Save the updated tasks after removal
-    // });
+    // // Add a double click event listener to...
+    taskCircle.addEventListener('dblclick', () => {
+        editTaskButton.style.display = "block";
+        saveTasksToLocalStorage(); // Save the updated tasks after removal
+    });
 
     // Add a mousedown event listener to set the dragging flag
     taskCircle.addEventListener('mousedown', () => {
@@ -286,6 +291,21 @@ addTaskButton.addEventListener('click', () => {
         dateText.value = '';
         saveTasksToLocalStorage(); // Save the new task to local storage
     }
+});
+editTaskButton.addEventListener('click', () => {
+    const taskName = taskText.value.trim();
+    const dateName = '\n' + dateText.value.trim();
+    if (taskName !== '') {
+        //create new task with same attributes as selected circle, with updated text
+        createTask(taskName + dateName);
+        //remove the selected circle
+        selectedCircle.remove();
+
+        taskText.value = '';
+        dateText.value = '';
+        saveTasksToLocalStorage(); // Save the new task to local storage
+    }
+    editTaskButton.style.display = "none";
 });
 
 document.addEventListener('keydown', (e) => {
