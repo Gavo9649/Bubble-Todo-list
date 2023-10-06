@@ -50,7 +50,8 @@ function createTask(text, savedAttributes = null) {
         const maxTextSize = circleSize * 0.1; // 40% of the circle's radius
 
         // Update the text size with minimum and maximum limits
-        const minTextSize = 10; // Minimum text size
+        const minTextSize = 20; // Minimum text size
+
         const textSize = Math.min(maxTextSize, Math.max(minTextSize, maxTextSize));
         taskTextElement.style.fontSize = textSize + 'px';
     }
@@ -82,9 +83,6 @@ function createTask(text, savedAttributes = null) {
 
     // // Add a double click event listener to...
     taskCircle.addEventListener('dblclick', () => {
-        //remove the selected circle
-        selectedCircle.remove();
-        selectedCircle = null;
         saveTasksToLocalStorage(); // Save the updated tasks after removal
     });
 
