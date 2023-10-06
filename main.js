@@ -22,7 +22,11 @@ function createTask(text, savedAttributes = null) {
     const taskTextElement = document.createElement('div');
     taskTextElement.classList.add('task-text');
     let title = "Other:\n";
-    taskTextElement.textContent = text;
+    if (savedAttributes){
+        taskTextElement.textContent = text;    
+    } else {
+        taskTextElement.textContent = title + text;
+    }
 
     // Append the task text to the task circle
     taskCircle.appendChild(taskTextElement);
@@ -120,45 +124,26 @@ function createTask(text, savedAttributes = null) {
             switch (colorPresets[currentIndex]) {
                 case '#b92828a6': //red
                     title = "ENGR 1550:\n";
-                    taskTextElement.textContent = title + text;
                     break;
                 case '#2830c1a6': //blue
                     title = "Math 1513:\n";
-                    taskTextElement.textContent = title + text;
                     break;
                 case '#1c9d29a6': //green
                     title = "Chem 1515:\n";
-                    taskTextElement.textContent = title + text;
                     break;
                 case '#10d3d398': //light blue
                     title = "YSU 1500:\n";
-                    taskTextElement.textContent = title + text;
                     break;
                 case '#ee1b88a3': //pink-ish
                     title = "ENGR 1500:\n";
-                    taskTextElement.textContent = title + text;
                     break;
                 case '#aa3ee99f': //purple2
                     title = "HST 1500:\n";
-                    taskTextElement.textContent = title + text;
                     break;
-                // case '#': //
-                //     title = "New:\n";
-                //     taskTextElement.textContent = title + text;
-                //     break;
-                // case '#': //
-                //     title = "New:\n";
-                //     taskTextElement.textContent = title + text;
-                //     break;
-                // case '#': //
-                //     title = "New:\n";
-                //     taskTextElement.textContent = title + text;
-                //     break;
                 default:
                     title = "Other:\n";
-                    taskTextElement.textContent = title + text;
             }
-
+            taskTextElement.textContent = title + taskTextElement.textContent.substring(taskTextElement.textContent.indexOf('\n') + 1, taskTextElement.textContent.length);
             saveTasksToLocalStorage(); // Save the updated tasks after color change
         }
     });
@@ -242,7 +227,6 @@ function saveTasksToLocalStorage() {
 // Function to load tasks from local storage and recreate them
 function loadTasksFromLocalStorage() {
     const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    console.log(savedTasks)
     savedTasks.forEach((savedTask) => {
         createTask(savedTask.text, savedTask);
     });
