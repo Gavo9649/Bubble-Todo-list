@@ -59,7 +59,7 @@ function createTask(text, savedAttributes = null) {
     // Add a wheel event listener to change the size on scroll
     taskCircle.addEventListener('wheel', (e) => {
         e.preventDefault();
-        const scaleFactor = e.deltaY > 0 ? 0.95 : 1.05; // Adjust as needed
+        const scaleFactor = e.deltaY > 0 ? 0.975 : 1.025; // Adjust as needed
 
         // Update circle size
         circleSize *= scaleFactor;
