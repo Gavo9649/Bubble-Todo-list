@@ -4,6 +4,8 @@ const taskText = document.getElementById('taskText');
 const dateText = document.getElementById('dateText');
 const addTaskButton = document.getElementById('addTaskButton');
 
+const editTaskButton = document.getElementById('editTaskButton');
+
 // Define a list of color presets
 const colorPresets = ['#b92828a6', '#2830c1a6', '#1c9d29a6', '#10d3d398', '#ee1b88a3', '#aa3ee99f'];
 let selectedCircle = null;
@@ -82,8 +84,27 @@ function createTask(text, savedAttributes = null) {
     });
 
     // // Add a double click event listener to...
-    taskCircle.addEventListener('dblclick', () => {
-        saveTasksToLocalStorage(); // Save the updated tasks after removal
+    taskCircle.addEventListener('click', () => {
+        if (!isDragging) {
+            if (selectedCircle) {
+                //change outline of circle to white
+                selectedCircle.style.outline = "none";
+            } 
+            if (selectedCircle === taskCircle) {
+                selectedCircle = null;
+            }
+            selectedCircle = taskCircle;
+            selectedCircle.style.outline = "4px solid black";
+            saveTasksToLocalStorage();
+        }
+    });
+    //deselct circle if escape key is pressed
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && selectedCircle) {
+            selectedCircle.style.outline = "none";
+            selectedCircle = null;
+            saveTasksToLocalStorage(); // Save the updated tasks after removal
+        }
     });
 
     // Add a mousedown event listener to set the dragging flag
@@ -97,7 +118,7 @@ function createTask(text, savedAttributes = null) {
     });
 
     // Add a click event listener to handle click and change color
-    taskCircle.addEventListener('click', (e) => {
+    taskCircle.addEventListener('dblclick', (e) => {
         e.stopPropagation(); // Prevent the click from propagating to the container
 
         // Only change the color if the circle is not being dragged
@@ -272,6 +293,23 @@ addTaskButton.addEventListener('click', () => {
     }
 }); 
 
+editTaskButton.addEventListener('click', () => {
+    const taskName = taskText.value.trim();
+    const dateName = '\n' + dateText.value.trim();
+    if (taskName !== '') {
+        selectedCircle.querySelector('.task-text').textContent =  String(selectedCircle.querySelector('.task-text').textContent).substring(0, String(selectedCircle.querySelector('.task-text').textContent).indexOf("\n") + 1) + taskName + dateName;
+        taskText.value = '';
+        dateText.value = '';
+        saveTasksToLocalStorage(); // Save the new task to local storage
+    } else {
+        if (selectedCircle) { 
+            taskText.focus();
+        } else {
+            alert("Please select a task to edit.");
+        }
+    }
+}); 
+
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Delete' && selectedCircle) {
         selectedCircle.remove();
@@ -279,3 +317,4 @@ document.addEventListener('keydown', (e) => {
         saveTasksToLocalStorage(); // Save the updated tasks after removal
     }
 });
+
