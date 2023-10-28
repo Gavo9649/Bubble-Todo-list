@@ -5,6 +5,7 @@ const dateText = document.getElementById('dateText');
 const addTaskButton = document.getElementById('addTaskButton');
 
 const editTaskButton = document.getElementById('editTaskButton');
+const deleteTaskButton = document.getElementById('deleteTaskButton')
 
 // Define a list of color presets
 const colorPresets = ['#b92828a6', '#2830c1a6', '#1c9d29a6', '#10d3d398', '#ee1b88a3', '#aa3ee99f'];
@@ -90,7 +91,7 @@ function createTask(text, savedAttributes = null) {
                 //change outline of circle to white
                 selectedCircle.style.outline = "none";
             } 
-            if (selectedCircle === taskCircle) {
+            if (selectedCircle == taskCircle) {
                 selectedCircle = null;
             }
             selectedCircle = taskCircle;
@@ -309,6 +310,16 @@ editTaskButton.addEventListener('click', () => {
         }
     }
 }); 
+deleteTaskButton.addEventListener('click', () => {
+    if (selectedCircle) {
+        selectedCircle.remove();
+        selectedCircle = null;
+        saveTasksToLocalStorage(); // Save the updated tasks after removal
+    } else {
+        alert("Please select a task to delete.");
+    }
+});
+
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Delete' && selectedCircle) {
