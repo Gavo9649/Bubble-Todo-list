@@ -85,7 +85,7 @@ function createTask(text, savedAttributes = null) {
     });
 
     // // Add a double click event listener to...
-    taskCircle.addEventListener('click', () => {
+    taskCircle.addEventListener('touchmove', () => {
         if (!isDragging) {
             if (selectedCircle) {
                 //change outline of circle to white
