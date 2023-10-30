@@ -84,8 +84,74 @@ function createTask(text, savedAttributes = null) {
         saveTasksToLocalStorage();
     });
 
-    // Make the task circle draggable
-    makeDraggable(taskCircle);
+    // // Add a double click event listener to...
+    taskCircle.addEventListener('click', () => {
+        if (!isDragging) {
+            if (selectedCircle) {
+                //change outline of circle to white
+                selectedCircle.style.outline = "none";
+            } 
+            if (selectedCircle == taskCircle) {
+                selectedCircle = null;
+            }
+            selectedCircle = taskCircle;
+            selectedCircle.style.outline = "4px solid black";
+            saveTasksToLocalStorage();
+        }
+    });
+
+    // Add a click event listener to handle click and change color
+    taskCircle.addEventListener('dblclick', (e) => {
+        e.stopPropagation(); // Prevent the click from propagating to the container
+
+        // Only change the color if the circle is not being dragged
+        if (!isDragging) {
+            // Check if this circle already has a color index
+            if (circleColorIndexes[taskCircle] === undefined) {
+                // If not, set it to 0 (the first color preset)
+                circleColorIndexes[taskCircle] = 0;
+            } else {
+                // Increment the color index, and wrap around if needed
+                circleColorIndexes[taskCircle] = (circleColorIndexes[taskCircle] + 1) % colorPresets.length;
+            }
+
+            // Get the current color index for this circle
+            const currentIndex = circleColorIndexes[taskCircle];
+
+            // Set the color of the circle based on the current index
+            taskCircle.style.backgroundColor = colorPresets[currentIndex];
+
+            // Set this circle as the selectedCircle
+            selectedCircle = taskCircle;
+            switch (colorPresets[currentIndex]) {
+                case '#b92828a6': //red
+                    title = "ENGR 1550:\n";
+                    break;
+                case '#2830c1a6': //blue
+                    title = "Math 1513:\n";
+                    break;
+                case '#1c9d29a6': //green
+                    title = "Chem 1515:\n";
+                    break;
+                case '#10d3d398': //light blue
+                    title = "YSU 1500:\n";
+                    break;
+                case '#ee1b88a3': //pink-ish
+                    title = "ENGR 1500:\n";
+                    break;
+                case '#aa3ee99f': //purple2
+                    title = "HST 1500:\n";
+                    break;
+                default:
+                    title = "Other:\n";
+            }
+            taskTextElement.textContent = title + taskTextElement.textContent.substring(taskTextElement.textContent.indexOf('\n') + 1, taskTextElement.textContent.length);
+            saveTasksToLocalStorage(); // Save the updated tasks after color change
+        }
+    });
+
+    // Make the task circle draggable (Call the dragElement function)
+    dragElement(taskCircle);
 
     // Initialize the size
     updateSize();
@@ -100,58 +166,58 @@ function createTask(text, savedAttributes = null) {
     }
 }
 
-// Function to make an element draggable
-function makeDraggable(elmnt) {
+function dragElement(elmnt) {
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     if (elmnt) {
-        elmnt.onmousedown = dragMouseDown;
-        elmnt.ontouchstart = touchStart;
+        elmnt.addEventListener('mousedown', dragMouseDown);
+        elmnt.addEventListener('touchstart', dragTouchStart, { passive: false });
     }
 
     function dragMouseDown(e) {
         e = e || window.event;
         e.preventDefault();
-        // get the mouse cursor position at startup:
         pos3 = e.clientX;
         pos4 = e.clientY;
         document.onmouseup = closeDragElement;
-        // call a function whenever the cursor moves:
         document.onmousemove = elementDrag;
+    }
+
+    function dragTouchStart(e) {
+        const touch = e.targetTouches[0];
+        pos3 = touch.clientX;
+        pos4 = touch.clientY;
+        document.addEventListener('touchend', closeDragElement, { passive: false });
+        document.addEventListener('touchmove', elementDrag, { passive: false });
     }
 
     function elementDrag(e) {
         e = e || window.event;
         e.preventDefault();
-        // calculate the new cursor position:
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        // set the element's new position:
-        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-    }
-
-    function touchStart(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // get the touch position at startup:
-        pos3 = e.touches[0].clientX;
-        pos4 = e.touches[0].clientY;
-        elmnt.ontouchend = closeDragElement;
-        // call a function whenever the touch position changes:
-        elmnt.ontouchmove = elementDrag;
+        if (e.type === 'touchmove') {
+            const touch = e.targetTouches[0];
+            pos1 = pos3 - touch.clientX;
+            pos2 = pos4 - touch.clientY;
+            pos3 = touch.clientX;
+            pos4 = touch.clientY;
+        } else {
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+        }
+        elmnt.style.top = (elmnt.offsetTop - pos2) + 'px';
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px';
     }
 
     function closeDragElement() {
-        // stop moving when the mouse button or touch is released:
         document.onmouseup = null;
         document.onmousemove = null;
-        elmnt.ontouchend = null;
-        elmnt.ontouchmove = null;
-        saveTasksToLocalStorage(); // Save the updated tasks after dragging
+        document.removeEventListener('touchend', closeDragElement, { passive: false });
+        document.removeEventListener('touchmove', elementDrag, { passive: false });
+        saveTasksToLocalStorage();
     }
 }
+
 
 // Function to save tasks to local storage
 function saveTasksToLocalStorage() {
