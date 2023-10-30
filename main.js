@@ -6,6 +6,8 @@ const addTaskButton = document.getElementById('addTaskButton');
 
 const editTaskButton = document.getElementById('editTaskButton');
 const deleteTaskButton = document.getElementById('deleteTaskButton')
+editTaskButton.style.display = "none";
+deleteTaskButton.style.display = "none";
 
 // Define a list of color presets
 const colorPresets = ['#b92828a6', '#2830c1a6', '#1c9d29a6', '#10d3d398', '#ee1b88a3', '#aa3ee99f'];
@@ -86,18 +88,18 @@ function createTask(text, savedAttributes = null) {
 
     // // Add a double click event listener to...
     taskCircle.addEventListener('click', () => {
-        if (!isDragging) {
-            if (selectedCircle) {
-                //change outline of circle to white
-                selectedCircle.style.outline = "none";
-            } 
-            if (selectedCircle == taskCircle) {
-                selectedCircle = null;
-            }
+        if (selectedCircle != taskCircle) {
             selectedCircle = taskCircle;
-            selectedCircle.style.outline = "4px solid black";
-            saveTasksToLocalStorage();
+            taskCircle.style.outline = "4px solid black";
+            editTaskButton.style.display = "block";
+            deleteTaskButton.style.display = "block";
+        } else {
+            selectedCircle = null;
+            taskCircle.style.outline = "none";
+            editTaskButton.style.display = "none";
+            deleteTaskButton.style.display = "none";
         }
+        saveTasksToLocalStorage();
     });
 
     // Add a click event listener to handle click and change color
