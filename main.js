@@ -323,18 +323,34 @@ deleteTaskButton.addEventListener('click', () => {
         selectedCircle = null;
         editTaskButton.style.display = "none";
         deleteTaskButton.style.display = "none";
+        increaseSizeButton.style.display = "none";
+        decreaseSizeButton.style.display = "none";
         saveTasksToLocalStorage(); // Save the updated tasks after removal
     } else {
         alert("Please select a task to delete.");
     }
 });
 
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Delete' && selectedCircle) {
-        selectedCircle.remove();
-        selectedCircle = null;
-        saveTasksToLocalStorage(); // Save the updated tasks after removal
+increaseSizeButton.addEventListener('click', () => {
+    if (selectedCircle) {
+        let circleSize = parseFloat(selectedCircle.style.width); // Get circle size
+        circleSize *= 1.05;
+        selectedCircle.style.width = circleSize + 'px';
+        selectedCircle.style.height = circleSize + 'px';
+        saveTasksToLocalStorage(); // Save the updated tasks after size change
+    } else {
+        alert("Please select a task to increase size.");
+    }
+});
+decreaseSizeButton.addEventListener('click', () => {
+    if (selectedCircle) {
+        let circleSize = parseFloat(selectedCircle.style.width); // Get circle size
+        circleSize *= 0.95;
+        selectedCircle.style.width = circleSize + 'px';
+        selectedCircle.style.height = circleSize + 'px';
+        saveTasksToLocalStorage(); // Save the updated tasks after size change
+    } else {
+        alert("Please select a task to decrease size.");
     }
 });
 

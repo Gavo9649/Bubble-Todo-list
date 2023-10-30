@@ -83,6 +83,7 @@ button {
     cursor: pointer;
     margin-right: 10px;
     transition: background-color 0.3s;
+    touch-action: manipulation;
 }
 button[id="deleteTaskButton"] {
     background-color: #c32424; /* 27ae60 */
