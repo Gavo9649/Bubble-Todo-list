@@ -27,6 +27,19 @@ html {
     align-items: center;
     margin-top: 20px;
 }
+.editing-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 1px;
+    padding: 5px;
+}
 
 .edit-task-container {
     display: flex;
@@ -82,6 +95,14 @@ button[id="deleteTaskButton"] {
     margin-right: 10px;
     transition: background-color 0.3s;
 }
+
+button[id="increaseSizeButton"] {
+    padding: 0px 15px;
+}
+button[id="decreaseSizeButton"] {
+    padding: 0px 10px;
+}
+
 
 button:hover {
     background-color: #17723b;

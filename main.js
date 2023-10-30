@@ -6,8 +6,13 @@ const addTaskButton = document.getElementById('addTaskButton');
 
 const editTaskButton = document.getElementById('editTaskButton');
 const deleteTaskButton = document.getElementById('deleteTaskButton')
+const increaseSizeButton = document.getElementById('increaseSizeButton');
+const decreaseSizeButton = document.getElementById('decreaseSizeButton');
 editTaskButton.style.display = "none";
 deleteTaskButton.style.display = "none";
+increaseSizeButton.style.display = "none";
+decreaseSizeButton.style.display = "none";
+
 
 // Define a list of color presets
 const colorPresets = ['#b92828a6', '#2830c1a6', '#1c9d29a6', '#10d3d398', '#ee1b88a3', '#aa3ee99f'];
@@ -93,11 +98,15 @@ function createTask(text, savedAttributes = null) {
             taskCircle.style.outline = "4px solid black";
             editTaskButton.style.display = "block";
             deleteTaskButton.style.display = "block";
+            increaseSizeButton.style.display = "block";
+            decreaseSizeButton.style.display = "block";
         } else {
             selectedCircle = null;
             taskCircle.style.outline = "none";
             editTaskButton.style.display = "none";
             deleteTaskButton.style.display = "none";
+            increaseSizeButton.style.display = "none";
+            decreaseSizeButton.style.display = "none";
         }
         saveTasksToLocalStorage();
     });
@@ -312,6 +321,8 @@ deleteTaskButton.addEventListener('click', () => {
     if (selectedCircle) {
         selectedCircle.remove();
         selectedCircle = null;
+        editTaskButton.style.display = "none";
+        deleteTaskButton.style.display = "none";
         saveTasksToLocalStorage(); // Save the updated tasks after removal
     } else {
         alert("Please select a task to delete.");
