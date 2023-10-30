@@ -10,7 +10,7 @@ const deleteTaskButton = document.getElementById('deleteTaskButton')
 // Define a list of color presets
 const colorPresets = ['#b92828a6', '#2830c1a6', '#1c9d29a6', '#10d3d398', '#ee1b88a3', '#aa3ee99f'];
 let selectedCircle = null;
-let isDragging = false; // Flag to track if the circle is being dragged
+let isDragging = false; 
 
 // Create an object to store the current color index for each circle
 const circleColorIndexes = {};
@@ -98,24 +98,6 @@ function createTask(text, savedAttributes = null) {
             selectedCircle.style.outline = "4px solid black";
             saveTasksToLocalStorage();
         }
-    });
-    //deselct circle if escape key is pressed
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && selectedCircle) {
-            selectedCircle.style.outline = "none";
-            selectedCircle = null;
-            saveTasksToLocalStorage(); // Save the updated tasks after removal
-        }
-    });
-
-    // Add a mousedown event listener to set the dragging flag
-    taskCircle.addEventListener('mousedown', () => {
-        isDragging = false;
-    });
-
-    // Add a mousemove event listener to detect dragging
-    taskCircle.addEventListener('mousemove', () => {
-        isDragging = true;
     });
 
     // Add a click event listener to handle click and change color
