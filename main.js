@@ -95,114 +95,83 @@ function createTask(text, savedAttributes = null) {
         saveTasksToLocalStorage();
     });
     increaseSizeButton.addEventListener('mousedown', () => {
-        const scaleFactor = 1.025; // Adjust as needed
+        if (selectedCircle) {
+            const rect = selectedCircle.getBoundingClientRect();
 
-        // Update circle size
-        circleSize *= scaleFactor;
+            let circleSize = parseFloat(selectedCircle.style.width); // Get circle size
+            if (circleSize < maxCircleSize){
+                circleSize *= 1.0125;
 
-        // Update the size with limits and reposition to keep the center fixed
-        const rect = taskCircle.getBoundingClientRect();
-        const newWidth = Math.min(maxCircleSize, Math.max(minCircleSize, rect.width * scaleFactor));
-        const newHeight = Math.min(maxCircleSize, Math.max(minCircleSize, rect.height * scaleFactor));
-        const newTop = rect.top + (rect.height - newHeight) / 2;
-        const newLeft = rect.left + (rect.width - newWidth) / 2;
-
-        taskCircle.style.width = newWidth + 'px';
-        taskCircle.style.height = newHeight + 'px';
-        taskCircle.style.top = newTop + 'px';
-        taskCircle.style.left = newLeft + 'px';
-
-        // Update the text size
-        updateSize();
-        saveTasksToLocalStorage();
+                selectedCircle.style.width = circleSize + 'px';
+                selectedCircle.style.height = circleSize + 'px';
+                selectedCircle.style.top = rect.top - (circleSize * 0.0125 / 2) + 'px';
+                selectedCircle.style.left = rect.left - (circleSize * 0.0125 / 2) + 'px';   
+            }
+        }
+        saveTasksToLocalStorage(); // Save the updated tasks after size change
     });
     increaseSizeButton.addEventListener('mouseup', () => {
-        const scaleFactor = 1.025; // Adjust as needed
+        if (selectedCircle) {
+            const rect = selectedCircle.getBoundingClientRect();
 
-        // Update circle size
-        circleSize *= scaleFactor;
+            let circleSize = parseFloat(selectedCircle.style.width); // Get circle size
+            if (circleSize < maxCircleSize){
+                circleSize *= 1.0125;
 
-        // Update the size with limits and reposition to keep the center fixed
-        const rect = taskCircle.getBoundingClientRect();
-        const newWidth = Math.min(maxCircleSize, Math.max(minCircleSize, rect.width * scaleFactor));
-        const newHeight = Math.min(maxCircleSize, Math.max(minCircleSize, rect.height * scaleFactor));
-        const newTop = rect.top + (rect.height - newHeight) / 2;
-        const newLeft = rect.left + (rect.width - newWidth) / 2;
-
-        taskCircle.style.width = newWidth + 'px';
-        taskCircle.style.height = newHeight + 'px';
-        taskCircle.style.top = newTop + 'px';
-        taskCircle.style.left = newLeft + 'px';
-
-        // Update the text size
-        updateSize();
-        saveTasksToLocalStorage();
+                selectedCircle.style.width = circleSize + 'px';
+                selectedCircle.style.height = circleSize + 'px';
+                selectedCircle.style.top = rect.top - (circleSize * 0.0125 / 2) + 'px';
+                selectedCircle.style.left = rect.left - (circleSize * 0.0125 / 2) + 'px';   
+            }
+        }
+        saveTasksToLocalStorage(); // Save the updated tasks after size change
     });
     decreaseSizeButton.addEventListener('mousedown', () => {
-        const scaleFactor = 0.975; // Adjust as needed
+        if (selectedCircle) {
+            const rect = selectedCircle.getBoundingClientRect();
 
-        // Update circle size
-        circleSize *= scaleFactor;
+            let circleSize = parseFloat(selectedCircle.style.width); // Get circle size
+            if (circleSize > minCircleSize){
+                circleSize *= 0.9875;
 
-        // Update the size with limits and reposition to keep the center fixed
-        const rect = taskCircle.getBoundingClientRect();
-        const newWidth = Math.min(maxCircleSize, Math.max(minCircleSize, rect.width * scaleFactor));
-        const newHeight = Math.min(maxCircleSize, Math.max(minCircleSize, rect.height * scaleFactor));
-        const newTop = rect.top + (rect.height - newHeight) / 2;
-        const newLeft = rect.left + (rect.width - newWidth) / 2;
-
-        taskCircle.style.width = newWidth + 'px';
-        taskCircle.style.height = newHeight + 'px';
-        taskCircle.style.top = newTop + 'px';
-        taskCircle.style.left = newLeft + 'px';
-
-        // Update the text size
-        updateSize();
-        saveTasksToLocalStorage();
+                selectedCircle.style.width = circleSize + 'px';
+                selectedCircle.style.height = circleSize + 'px';
+                selectedCircle.style.top = rect.top + (circleSize * 0.0125 / 2) + 'px';
+                selectedCircle.style.left = rect.left + (circleSize * 0.0125 / 2) + 'px';   
+            }
+        }
+        saveTasksToLocalStorage(); // Save the updated tasks after size change
     });
     decreaseSizeButton.addEventListener('mouseup', () => {
-        const scaleFactor = 0.975; // Adjust as needed
+        if (selectedCircle) {
+            const rect = selectedCircle.getBoundingClientRect();
 
-        // Update circle size
-        circleSize *= scaleFactor;
+            let circleSize = parseFloat(selectedCircle.style.width); // Get circle size
+            if (circleSize > minCircleSize){
+                circleSize *= 0.9875;
 
-        // Update the size with limits and reposition to keep the center fixed
-        const rect = taskCircle.getBoundingClientRect();
-        const newWidth = Math.min(maxCircleSize, Math.max(minCircleSize, rect.width * scaleFactor));
-        const newHeight = Math.min(maxCircleSize, Math.max(minCircleSize, rect.height * scaleFactor));
-        const newTop = rect.top + (rect.height - newHeight) / 2;
-        const newLeft = rect.left + (rect.width - newWidth) / 2;
-
-        taskCircle.style.width = newWidth + 'px';
-        taskCircle.style.height = newHeight + 'px';
-        taskCircle.style.top = newTop + 'px';
-        taskCircle.style.left = newLeft + 'px';
-
-        // Update the text size
-        updateSize();
-        saveTasksToLocalStorage();
+                selectedCircle.style.width = circleSize + 'px';
+                selectedCircle.style.height = circleSize + 'px';
+                selectedCircle.style.top = rect.top + (circleSize * 0.0125 / 2) + 'px';
+                selectedCircle.style.left = rect.left + (circleSize * 0.0125 / 2) + 'px';   
+            }
+        }
+        saveTasksToLocalStorage(); // Save the updated tasks after size change
     });
+    
+    
 
     // // Add a double click event listener to...
     taskCircle.addEventListener('click', () => {
-        if (selectedCircle != taskCircle) {
+        if (selectedCircle) {
+            selectedCircle.style.outline = "none";
             selectedCircle = taskCircle;
-            taskCircle.style.outline = "4px solid black";
-            editTaskButton.style.display = "block";
-            deleteTaskButton.style.display = "block";
-            increaseSizeButton.style.display = "block";
-            decreaseSizeButton.style.display = "block";
-            nextClassButton.style.display = "block";
-            previousClassButton.style.display = "block";
+            selectedCircle.style.outline = "4px solid black";
+            showEditingBar();
         } else {
-            selectedCircle = null;
-            taskCircle.style.outline = "none";
-            editTaskButton.style.display = "none";
-            deleteTaskButton.style.display = "none";
-            increaseSizeButton.style.display = "none";
-            decreaseSizeButton.style.display = "none";
-            nextClassButton.style.display = "none";
-            previousClassButton.style.display = "none";
+            selectedCircle = taskCircle;
+            selectedCircle.style.outline = "4px solid black";
+            showEditingBar();
         }
         saveTasksToLocalStorage();
     });
@@ -230,52 +199,6 @@ function createTask(text, savedAttributes = null) {
 
             // Set this circle as the selectedCircle
             selectedCircle = taskCircle;
-            switch (colorPresets[currentIndex]) {
-                case '#b92828a6': //red
-                    title = "ENGR 1550:\n";
-                    break;
-                case '#2830c1a6': //blue
-                    title = "Math 1513:\n";
-                    break;
-                case '#1c9d29a6': //green
-                    title = "Chem 1515:\n";
-                    break;
-                case '#10d3d398': //light blue
-                    title = "YSU 1500:\n";
-                    break;
-                case '#ee1b88a3': //pink-ish
-                    title = "ENGR 1500:\n";
-                    break;
-                case '#aa3ee99f': //purple2
-                    title = "HST 1500:\n";
-                    break;
-                default:
-                    title = "Other:\n";
-            }
-            taskTextElement.textContent = title + taskTextElement.textContent.substring(taskTextElement.textContent.indexOf('\n') + 1, taskTextElement.textContent.length);
-            saveTasksToLocalStorage(); // Save the updated tasks after color change
-        }
-    });
-    nextClassButton.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent the click from propagating to the container
-
-        // Only change the color if the circle is not being dragged
-        if (selectedCircle) {
-            // Check if this circle already has a color index
-            if (circleColorIndexes[selectedCircle] === undefined) {
-                // If not, set it to 0 (the first color preset)
-                circleColorIndexes[selectedCircle] = 0;
-            } else {
-                // Increment the color index, and wrap around if needed
-                circleColorIndexes[selectedCircle] = (circleColorIndexes[selectedCircle] + 1) % colorPresets.length;
-            }
-
-            // Get the current color index for this circle
-            const currentIndex = circleColorIndexes[selectedCircle];
-
-            // Set the color of the circle based on the current index
-            selectedCircle.style.backgroundColor = colorPresets[currentIndex];
-
             switch (colorPresets[currentIndex]) {
                 case '#b92828a6': //red
                     title = "ENGR 1550:\n";
@@ -463,37 +386,26 @@ deleteTaskButton.addEventListener('click', () => {
     if (selectedCircle) {
         selectedCircle.remove();
         selectedCircle = null;
-        editTaskButton.style.display = "none";
-        deleteTaskButton.style.display = "none";
-        increaseSizeButton.style.display = "none";
-        decreaseSizeButton.style.display = "none";
-        nextClassButton.style.display = "none";
-        previousClassButton.style.display = "none";
+        hideEditingBar();
         saveTasksToLocalStorage(); // Save the updated tasks after removal
     } else {
         alert("Please select a task to delete.");
     }
 });
 
-// increaseSizeButton.addEventListener('click', () => {
-//     if (selectedCircle) {
-//         let circleSize = parseFloat(selectedCircle.style.width); // Get circle size
-//         circleSize *= 1.05;
-//         selectedCircle.style.width = circleSize + 'px';
-//         selectedCircle.style.height = circleSize + 'px';
-//         saveTasksToLocalStorage(); // Save the updated tasks after size change
-//     } else {
-//         alert("Please select a task to increase size.");
-//     }
-// });
-// decreaseSizeButton.addEventListener('click', () => {
-//     if (selectedCircle) {
-//         let circleSize = parseFloat(selectedCircle.style.width); // Get circle size
-//         circleSize *= 0.95;
-//         selectedCircle.style.width = circleSize + 'px';
-//         selectedCircle.style.height = circleSize + 'px';
-//         saveTasksToLocalStorage(); // Save the updated tasks after size change
-//     } else {
-//         alert("Please select a task to decrease size.");
-//     }
-// });
+function hideEditingBar(){
+    editTaskButton.style.display = "none";
+    deleteTaskButton.style.display = "none";
+    increaseSizeButton.style.display = "none";
+    decreaseSizeButton.style.display = "none";
+    nextClassButton.style.display = "none";
+    previousClassButton.style.display = "none";
+}
+function showEditingBar(){
+    editTaskButton.style.display = "inline";
+    deleteTaskButton.style.display = "inline";
+    increaseSizeButton.style.display = "inline";
+    decreaseSizeButton.style.display = "inline";
+    nextClassButton.style.display = "inline";
+    previousClassButton.style.display = "inline";
+}
