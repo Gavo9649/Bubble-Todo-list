@@ -12,7 +12,7 @@ body {
     margin: 0;
     overflow-x: hidden;
     overflow-y: hidden;
-    position: relative;
+    /* position: relative; */
 }
 
 html {
@@ -101,9 +101,15 @@ button[id="increaseSizeButton"] {
     padding: 0px 15px;
 }
 button[id="decreaseSizeButton"] {
-    padding: 0px 10px;
+    padding: 0px 15px;
 }
 
+button[id="nextClassButton"] {
+    padding: 0px 15px;
+}
+button[id="previousClassButton"] {
+    padding: 0px 15px;
+}
 
 button:hover {
     background-color: #17723b;
