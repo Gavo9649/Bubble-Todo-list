@@ -103,7 +103,7 @@ function createTask(text, savedAttributes = null) {
             const touch1 = e.touches[0];
             const touch2 = e.touches[1];
             const dist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
-            const scaleMultiplier = 0.0125; // Adjust as needed
+            const scaleMultiplier = 0.015; // Adjust as needed
             const scaleFactor = dist > taskCircle.dataset.pinchDist ? 1+scaleMultiplier : 1-scaleMultiplier; // Adjust as needed
 
             // Update circle size
@@ -132,12 +132,18 @@ function createTask(text, savedAttributes = null) {
 
     // // Add a double click event listener to...
     taskCircle.addEventListener('click', () => {
-        if (selectedCircle) {
+        if (selectedCircle === taskCircle) {
+            console.log("selectedcircle === taskcircle")
             selectedCircle.style.outline = "none";
+            selectedCircle = null;
+            hideEditingBar();
+        } else if (selectedCircle == null) {
+            console.log("selectedcircle == null")
             selectedCircle = taskCircle;
             selectedCircle.style.outline = "4px solid black";
             showEditingBar();
-        } else {
+        } else if (selectedCircle){
+            selectedCircle.style.outline = "none";
             selectedCircle = taskCircle;
             selectedCircle.style.outline = "4px solid black";
             showEditingBar();
@@ -241,6 +247,9 @@ function dragElement(elmnt) {
         e = e || window.event;
         e.preventDefault();
         if (e.type === 'touchmove') {
+            if (e.touches.length > 1){ // Ignore multi-touch events (pinch gesture)
+                return
+            }; 
             const touch = e.targetTouches[0];
             pos1 = pos3 - touch.clientX;
             pos2 = pos4 - touch.clientY;
