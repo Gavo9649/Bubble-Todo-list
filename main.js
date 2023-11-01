@@ -6,16 +6,10 @@ const addTaskButton = document.getElementById('addTaskButton');
 
 const editTaskButton = document.getElementById('editTaskButton');
 const deleteTaskButton = document.getElementById('deleteTaskButton')
-const increaseSizeButton = document.getElementById('increaseSizeButton');
-const decreaseSizeButton = document.getElementById('decreaseSizeButton');
-const nextClassButton = document.getElementById('nextClassButton');
-const previousClassButton = document.getElementById('previousClassButton');
+
 editTaskButton.style.display = "none";
 deleteTaskButton.style.display = "none";
-increaseSizeButton.style.display = "none";
-decreaseSizeButton.style.display = "none";
-nextClassButton.style.display = "none";
-previousClassButton.style.display = "none";
+
 
 
 // Define a list of color presets
@@ -94,72 +88,47 @@ function createTask(text, savedAttributes = null) {
         updateSize();
         saveTasksToLocalStorage();
     });
-    increaseSizeButton.addEventListener('mousedown', () => {
-        if (selectedCircle) {
-            const rect = selectedCircle.getBoundingClientRect();
 
-            let circleSize = parseFloat(selectedCircle.style.width); // Get circle size
-            if (circleSize < maxCircleSize){
-                circleSize *= 1.0125;
-
-                selectedCircle.style.width = circleSize + 'px';
-                selectedCircle.style.height = circleSize + 'px';
-                selectedCircle.style.top = rect.top - (circleSize * 0.0125 / 2) + 'px';
-                selectedCircle.style.left = rect.left - (circleSize * 0.0125 / 2) + 'px';   
-            }
+    // // Add touch event listeners for pinch gesture to change the size
+    taskCircle.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+            const touch1 = e.touches[0];
+            const touch2 = e.touches[1];
+            const dist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+            taskCircle.dataset.pinchDist = dist;
         }
-        saveTasksToLocalStorage(); // Save the updated tasks after size change
     });
-    increaseSizeButton.addEventListener('mouseup', () => {
-        if (selectedCircle) {
-            const rect = selectedCircle.getBoundingClientRect();
+    taskCircle.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2) {
+            const touch1 = e.touches[0];
+            const touch2 = e.touches[1];
+            const dist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+            const scaleMultiplier = 0.0125; // Adjust as needed
+            const scaleFactor = dist > taskCircle.dataset.pinchDist ? 1+scaleMultiplier : 1-scaleMultiplier; // Adjust as needed
 
-            let circleSize = parseFloat(selectedCircle.style.width); // Get circle size
-            if (circleSize < maxCircleSize){
-                circleSize *= 1.0125;
+            // Update circle size
+            circleSize *= scaleFactor;
 
-                selectedCircle.style.width = circleSize + 'px';
-                selectedCircle.style.height = circleSize + 'px';
-                selectedCircle.style.top = rect.top - (circleSize * 0.0125 / 2) + 'px';
-                selectedCircle.style.left = rect.left - (circleSize * 0.0125 / 2) + 'px';   
-            }
+            // Update the size with limits and reposition to keep the center fixed
+            const rect = taskCircle.getBoundingClientRect();
+            const newWidth = Math.min(maxCircleSize, Math.max(minCircleSize, rect.width * scaleFactor));
+            const newHeight = Math.min(maxCircleSize, Math.max(minCircleSize, rect.height * scaleFactor));
+            const newTop = rect.top + (rect.height - newHeight) / 2;
+            const newLeft = rect.left + (rect.width - newWidth) / 2;
+
+            taskCircle.style.width = newWidth + 'px';
+            taskCircle.style.height = newHeight + 'px';
+            taskCircle.style.top = newTop + 'px';
+            taskCircle.style.left = newLeft + 'px';
+
+            // Update the text size
+            updateSize();
+            saveTasksToLocalStorage();
         }
-        saveTasksToLocalStorage(); // Save the updated tasks after size change
     });
-    decreaseSizeButton.addEventListener('mousedown', () => {
-        if (selectedCircle) {
-            const rect = selectedCircle.getBoundingClientRect();
-
-            let circleSize = parseFloat(selectedCircle.style.width); // Get circle size
-            if (circleSize > minCircleSize){
-                circleSize *= 0.9875;
-
-                selectedCircle.style.width = circleSize + 'px';
-                selectedCircle.style.height = circleSize + 'px';
-                selectedCircle.style.top = rect.top + (circleSize * 0.0125 / 2) + 'px';
-                selectedCircle.style.left = rect.left + (circleSize * 0.0125 / 2) + 'px';   
-            }
-        }
-        saveTasksToLocalStorage(); // Save the updated tasks after size change
-    });
-    decreaseSizeButton.addEventListener('mouseup', () => {
-        if (selectedCircle) {
-            const rect = selectedCircle.getBoundingClientRect();
-
-            let circleSize = parseFloat(selectedCircle.style.width); // Get circle size
-            if (circleSize > minCircleSize){
-                circleSize *= 0.9875;
-
-                selectedCircle.style.width = circleSize + 'px';
-                selectedCircle.style.height = circleSize + 'px';
-                selectedCircle.style.top = rect.top + (circleSize * 0.0125 / 2) + 'px';
-                selectedCircle.style.left = rect.left + (circleSize * 0.0125 / 2) + 'px';   
-            }
-        }
-        saveTasksToLocalStorage(); // Save the updated tasks after size change
-    });
-    
-    
+    taskCircle.addEventListener('touchend', (e) => {
+        taskCircle.dataset.pinchDist = 0;
+    });    
 
     // // Add a double click event listener to...
     taskCircle.addEventListener('click', () => {
@@ -175,6 +144,8 @@ function createTask(text, savedAttributes = null) {
         }
         saveTasksToLocalStorage();
     });
+
+    //
 
     // Add a click event listener to handle click and change color
     taskCircle.addEventListener('dblclick', (e) => {
@@ -396,16 +367,8 @@ deleteTaskButton.addEventListener('click', () => {
 function hideEditingBar(){
     editTaskButton.style.display = "none";
     deleteTaskButton.style.display = "none";
-    increaseSizeButton.style.display = "none";
-    decreaseSizeButton.style.display = "none";
-    nextClassButton.style.display = "none";
-    previousClassButton.style.display = "none";
 }
 function showEditingBar(){
     editTaskButton.style.display = "inline";
     deleteTaskButton.style.display = "inline";
-    increaseSizeButton.style.display = "inline";
-    decreaseSizeButton.style.display = "inline";
-    nextClassButton.style.display = "inline";
-    previousClassButton.style.display = "inline";
 }
